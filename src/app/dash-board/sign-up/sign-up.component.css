@@ -1,0 +1,42 @@
+.signup-card {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+input.form-control:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
+}
+
+button[type="submit"] {
+  background-color: #0d6efd;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0b5ed7;
+}
+
+a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.form-label {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bolder;
+  color: maroon;
+}
+
+h3 {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bolder;
+  color: darkgreen;
+}

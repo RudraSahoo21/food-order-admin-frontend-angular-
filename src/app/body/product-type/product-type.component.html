@@ -1,0 +1,58 @@
+<!-- <p>product-type works!</p> -->
+
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-titel mb-0">product Type</h6>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="productTypeForm">
+      <div class="form-check">
+        <input
+          type="radio"
+          id="veg"
+          formControlName="productType"
+          value="Veg"
+        />
+        <label class="form-check-label" for="flexRadioDefault1"> Veg </label>
+      </div>
+      <div class="form-check">
+        <input
+          type="radio"
+          formControlName="productType"
+          id="Non-veg"
+          value="Non-Veg"
+        />
+        <label class="form-check-label" for="flexRadioDefault2">
+          Non-Veg
+        </label>
+      </div>
+      <div class="form-check">
+        <input
+          type="radio"
+          formControlName="productType"
+          id="Egg"
+          value="Egg"
+        />
+        <label class="form-check-label" for="flexRadioDefault2"> Egg </label>
+      </div>
+      <div class="form-check">
+        <input
+          type="radio"
+          formControlName="productType"
+          id="Jain"
+          value="Jain"
+        />
+        <label class="form-check-label" for="flexRadioDefault2"> Jain </label>
+      </div>
+      <div class="form-check">
+        <input
+          type="radio"
+          formControlName="productType"
+          id="None"
+          value="None"
+        />
+        <label class="form-check-label" for="flexRadioDefault2"> None </label>
+      </div>
+    </form>
+  </div>
+</div>

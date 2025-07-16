@@ -1,0 +1,26 @@
+.signin-card {
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+input.form-control:focus {
+  box-shadow: none;
+  border-color: #198754; /* Bootstrap success color */
+}
+
+button[type="submit"] {
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #157347; /* Darker success */
+}
+
+a {
+  color: #198754;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

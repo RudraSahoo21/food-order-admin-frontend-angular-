@@ -1,0 +1,70 @@
+<!-- <p>addons works!</p> -->
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-title">Addons</h6>
+  </div>
+  <form class="card-body" [formGroup]="addOnListForm">
+    <div class="row" formArrayName="addOnListArray">
+      <div
+        class="col-md-12 col-12"
+        *ngFor="let array of addOnListArray.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div class="row p-2">
+          <!-- header -->
+          <h5>
+            <span><b>Category :</b> </span
+            ><span> {{ array.get("addonCategory")?.value }}</span>
+          </h5>
+
+          <!-- body -->
+          <div class="col-12 col-md-12 sticker">
+            <div class="col-1 col-md-1 colorSticker">
+              @if (array.get("type")?.value == "Veg") {
+              <i class="bi bi-record-btn" style="color: green"></i>
+              } @if (array.get("type")?.value == "Non-Veg") {
+              <i class="bi bi-record-btn" style="color: red"></i>
+              } @if (array.get("type")?.value == "Jain") {
+              <i class="bi bi-record-btn" style="color: orangered"></i>
+              } @if (array.get("type")?.value == "None") {
+              <i class="bi bi-record-btn" style="color: gray"></i>
+              }@if (array.get("type")?.value == "Egg") {
+              <i class="bi bi-record-btn" style="color: brown"></i>
+              }
+            </div>
+            <div class="col-5 col-md-5 name">
+              <div>
+                {{ array.get("addonName")?.value }}
+              </div>
+              <div id="desc">
+                {{ array.get("description")?.value }}
+              </div>
+            </div>
+            <div class="col-5 col-md-5 price">
+              <div>
+                <span style="color: gray">INR &nbsp;</span>
+                <span style="color: rgb(18 127 18)">
+                  {{ array.get("addonPrice")?.value | currency : "INR" }}</span
+                >
+              </div>
+              <small
+                >+ {{ array.get("taxrate")?.value | currency : "INR"
+                }}<span> tax &#64; </span
+                >{{ array.get("taxPercentage")?.value }} %</small
+              >
+            </div>
+            <div class="col-1 col-md-1 remove" (click)="openDeleteModal(i)">
+              <i class="bi bi-trash3"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="btn btn-dark col-2 col-md-2 mt-3" (click)="addAddOns()">
+        Add
+      </button>
+    </div>
+  </form>
+</div>

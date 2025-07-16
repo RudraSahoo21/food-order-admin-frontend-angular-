@@ -1,0 +1,46 @@
+<!-- <p>product-weight works!</p> -->
+<!-- <p>product-type works!</p> -->
+
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-titel mb-0">Product Weight</h6>
+  </div>
+  <form class="card-body" [formGroup]="weightForm_validation">
+    <div class="row">
+      <div class="col">
+        <label class="color-theme-black">Product Weight (Kg) *</label
+        ><input
+          type="text"
+          formControlName="product_weight"
+          required=""
+          name="product-weight"
+          class="form-control"
+          placeholder="Enter weight if applicable"
+          [ngClass]="{
+            'is-invalid':
+              weightForm_validation.controls['product_weight'].invalid &&
+              (weightForm_validation.controls['product_weight'].touched ||
+                weightForm_validation.controls['product_weight'].dirty),
+            'is-valid':
+              weightForm_validation.controls['product_weight'].valid &&
+              (weightForm_validation.controls['product_weight'].touched ||
+                weightForm_validation.controls['product_weight'].dirty)
+          }"
+        /><!----><!---->
+      </div>
+      <div
+        class="text-danger"
+        *ngIf="
+          weightForm_validation.controls['product_weight'].invalid &&
+          (weightForm_validation.controls['product_weight'].touched ||
+            weightForm_validation.controls['product_weight'].dirty)
+        "
+      >
+        <small
+          *ngIf="weightForm_validation.controls['product_weight'].errors?.['required']"
+          >Please enter valid weight</small
+        >
+      </div>
+    </div>
+  </form>
+</div>

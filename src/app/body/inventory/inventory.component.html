@@ -1,0 +1,98 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-title mb-0">Inventory</h6>
+  </div>
+
+  <div class="card-body">
+    <form class="row" [formGroup]="inventoryForm_validation">
+      <div class="col-12 col-md-12 mb-2 form-check chechBox">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="flexCheckDefault"
+          formControlName="Allow_Order"
+        />
+        <label class="form-check-label" for="flexCheckDefault">
+          Allow Ordering When Out Of Stock
+        </label>
+      </div>
+
+      <div class="col-12 col-md-12 mb-2 form-check">
+        <label class="form-label">SKU (Stock Keeping Unit) *</label>
+        <input
+          type="input"
+          class="form-control"
+          id="SKU"
+          formControlName="sku"
+          [ngClass]="{
+            'is-invalid':
+              inventoryForm_validation.controls['sku'].invalid &&
+              (inventoryForm_validation.controls['sku'].touched ||
+                inventoryForm_validation.controls['sku'].dirty),
+            'is-valid':
+              inventoryForm_validation.controls['sku'].valid &&
+              (inventoryForm_validation.controls['sku'].touched ||
+                inventoryForm_validation.controls['sku'].dirty)
+          }"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            inventoryForm_validation.controls['sku'].invalid &&
+            (inventoryForm_validation.controls['sku'].touched ||
+              inventoryForm_validation.controls['sku'].dirty)
+          "
+        >
+          <small
+            *ngIf="inventoryForm_validation.controls['sku'].errors?.['required']"
+            >SKU is required.</small
+          >
+        </div>
+      </div>
+
+      <div class="col-12 col-md-12 mb-2 form-check">
+        <label class="form-label">Available Stock *</label>
+        <input
+          type="input"
+          class="form-control"
+          id="Available-Stock"
+          placeholder="Available Stock"
+          formControlName="Available_Stock"
+          [ngClass]="{
+            'is-invalid':
+              inventoryForm_validation.controls['Available_Stock'].invalid &&
+              (inventoryForm_validation.controls['Available_Stock'].touched ||
+                inventoryForm_validation.controls['Available_Stock'].dirty),
+            'is-valid':
+              inventoryForm_validation.controls['Available_Stock'].valid &&
+              (inventoryForm_validation.controls['Available_Stock'].touched ||
+                inventoryForm_validation.controls['Available_Stock'].dirty)
+          }"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            inventoryForm_validation.controls['Available_Stock'].invalid &&
+            (inventoryForm_validation.controls['Available_Stock'].touched ||
+              inventoryForm_validation.controls['Available_Stock'].dirty)
+          "
+        >
+          <small
+            *ngIf="inventoryForm_validation.controls['Available_Stock'].errors?.['required']"
+            >Please Enter Stock</small
+          >
+        </div>
+      </div>
+
+      <div class="col-12 col-md-12 mb-2 form-check">
+        <label class="form-label">Barcode No (ISBN, etc.)</label>
+        <input
+          type="input"
+          class="form-control"
+          id="Barcode"
+          formControlName="Barcode_No"
+        />
+      </div>
+    </form>
+  </div>
+</div>

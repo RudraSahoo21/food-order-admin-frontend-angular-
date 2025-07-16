@@ -1,0 +1,48 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-title mb-0">Images</h6>
+  </div>
+  <div class="card-body">
+    <!-- image upload container -->
+    <div class="img-container">
+      <div class="image-previews">
+        <!-- Image previews section -->
+        <div
+          class="image-wrapper"
+          *ngFor="let preview of imagePreviews.controls; let i = index"
+          [ngClass]="{ enlarged: enlargedImageIndex === i }"
+        >
+          <img
+            [src]="preview.value"
+            alt="Image preview"
+            class="image-preview"
+            [ngClass]="{ enlarged: enlargedImageIndex === i }"
+            width="100%"
+            height="100%"
+          />
+          <div
+            class="image-buttons"
+            [ngClass]="{ enlarged: enlargedImageIndex === i }"
+          >
+            <button class="btn btn-primary" (click)="onStarClick(i)">⭐</button>
+            <button class="btn btn-danger" (click)="onRemoveImage(i)">
+              ❌
+            </button>
+          </div>
+        </div>
+
+        <!-- Input file container (styled as a box with a plus symbol) -->
+        <div class="file-input-container">
+          <input
+            type="file"
+            (change)="onImageSelected($event)"
+            accept="image/*"
+            class="file-input"
+          />
+          <span class="plus-icon">+</span>
+          <!-- Plus symbol inside the box -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

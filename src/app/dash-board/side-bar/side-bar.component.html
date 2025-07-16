@@ -1,0 +1,122 @@
+<div class="sidebar" *ngIf="LocalStorageToken">
+  <h5 class="mb-4" style="font-family: 'Times New Roman'">
+    <a routerLink="/DashBoard" class="DashBoard"
+      >DashBoard <i class="bi bi-gear-fill"></i
+    ></a>
+  </h5>
+
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a routerLink="/homepage" class="nav-link text-white">
+        <span><i class="bi bi-bag-plus"></i></span>
+        ADD NEW PRODUCT</a
+      >
+    </li>
+
+    <!-- Product table -->
+    <li class="nav-item">
+      <a routerLink="/DashBoard/productsTable" class="nav-link text-white">
+        <span>🛒</span>
+        PRODUCT TABLE</a
+      >
+    </li>
+
+    <!-- Categogy and subcategory list  // we can add new category & Subcategory form here -->
+    <li class="nav-item">
+      <a routerLink="/DashBoard/CategoryList" class="nav-link text-white">
+        <span><i class="bi bi-list-task"></i></span>
+        CATEGORY LIST</a
+      >
+    </li>
+
+    <!-- Menu list  // we can add new menu form here -->
+    <li class="nav-item">
+      <a routerLink="/DashBoard/MenuList" class="nav-link text-white">
+        <span>📋</span>
+        MENU LIST</a
+      >
+    </li>
+
+    <!-- Tax list  // we can add new tax form here -->
+    <li class="nav-item">
+      <a routerLink="/DashBoard/Taxation" class="nav-link text-white">
+        <span>💰</span>
+        Taxation</a
+      >
+    </li>
+
+    <!-- Tax list  // we can add new tax form here -->
+    <li class="nav-item">
+      <a routerLink="/DashBoard/AddonList" class="nav-link text-white">
+        <span>✍</span>
+        AddOns</a
+      >
+    </li>
+
+    <div class="LogInDiv mt-5">
+      <li class="nav-item" *ngIf="!LocalStorageToken">
+        <a class="nav-link" id="signIn" routerLink="/DashBoard/SignIn">
+          <span><i class="bi bi-person-fill-lock"></i></span>
+          Sign-In</a
+        >
+      </li>
+      <li class="nav-item" *ngIf="LocalStorageToken">
+        <a
+          class="nav-link"
+          id="LogOut"
+          data-bs-toggle="modal"
+          data-bs-target="#SignOff_Modal"
+        >
+          <span><i class="bi bi-person-fill-lock"></i></span>
+          Log-out</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="signUp" routerLink="/DashBoard/SingUP">
+          <span><i class="bi bi-shield-lock-fill"></i></span>
+          Sign-Up</a
+        >
+      </li>
+    </div>
+  </ul>
+</div>
+
+<!-- SignOff Modal -->
+<div
+  class="modal fade"
+  id="SignOff_Modal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Logout</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>User Role :- {{ UserRole }}</div>
+        <div>Do You Want to logout ??</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="logout()"
+          data-bs-dismiss="modal"
+        >
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

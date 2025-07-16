@@ -1,0 +1,13 @@
+h2 {
+  text-align: center;
+  color: rgb(97, 153, 13);
+  font-weight: bold;
+}
+
+div {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Full screen height */
+  background-color: ghostwhite;
+}

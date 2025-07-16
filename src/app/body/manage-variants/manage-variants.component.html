@@ -1,0 +1,100 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-title">Manage Variants</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="row pl-1">
+          <label>Variants By</label>
+
+          <div class="col-md-12 mt-2 mb-2">
+            <!-- Static Inputs -->
+            <div *ngFor="let variantBy of staticInputType; let i = index">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="{{ variantBy.id }}"
+                name="{{ variantBy.name }}"
+                value="{{ variantBy.value }}"
+                (click)="checked($event)"
+              />
+              <span>&nbsp; {{ variantBy.name }}</span>
+            </div>
+
+            <!-- custom fields -->
+            @if(customInputType.length > 0 ){
+            <div *ngFor="let items of customInputType">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="{{ items.id }}"
+                name="{{ items.name }}"
+                value="{{ items.value }}"
+                (click)="checked($event)"
+              />
+              <span>
+                &nbsp; {{ items.name }}
+                <i
+                  class="bi bi-trash-fill custom-dark"
+                  id="removeBtn"
+                  (click)="removeCustomInput(items.id)"
+                ></i
+              ></span>
+            </div>
+            }
+          </div>
+
+          <div class="row customType mt-1">
+            <label class="form-label col-12 col-md-12 mb-1">Custom Types</label>
+            <div class="col-9 col-md-8">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Custom Name"
+                #inputField
+              />
+            </div>
+            <div class="col-12 col-md-4">
+              <button
+                class="btn btn-dark w-100"
+                (click)="addCustomInput(inputField.value)"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <label class="form-label col-12 col-md-12">Create Variants</label>
+          <!-- Create Veriants -->
+          <div
+            class="col-12 mb-3"
+            *ngFor="let checkedItem of checkedVariant; let i = index"
+          >
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Enter {{ checkedItem.name }} "
+              [(ngModel)]="checkedVariant[i].value"
+            />
+          </div>
+          <!--  -->
+          <!--  -->
+          <!--  -->
+          <div class="col-12 col-md-6">
+            <button
+              class="btn btn-dark w-100"
+              (click)="toggleStatus()"
+              *ngIf="isAnyVariantChecked"
+            >
+              Add Variant
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

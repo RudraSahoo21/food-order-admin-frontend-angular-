@@ -1,0 +1,112 @@
+<div class="DashBoard">
+  <app-side-bar *ngIf="sidebar"></app-side-bar>
+  <div class="ContentArea">
+    <router-outlet></router-outlet>
+    <app-toast></app-toast>
+
+    <!-- DashBoard Cards -->
+    <div *ngIf="showCards" class="dashboardItems">
+      <!-- Add New Product -->
+      <div class="card" style="width: 18rem">
+        <img
+          src="/Images/new-product-concept-illustration_114360-7031.avif"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title">ADD NEW PRODUCT</h5>
+          <p class="card-text">
+            You can add new product details here, also can add the variantlist
+            and the addon if you want.
+          </p>
+          <a routerLink="/homepage" class="btn btn-success">Add</a>
+        </div>
+      </div>
+
+      <!-- Product Table -->
+      <div class="card" style="width: 18rem">
+        <img
+          src="/Images/product-manager-concept-illustration_114360-21574.avif"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title">PRODUCT LIST</h5>
+          <p class="card-text">
+            Seach here the product delatis . You can edit or delete existing
+            product from here .
+          </p>
+          <a routerLink="/DashBoard/productsTable" class="btn btn-success"
+            >Show</a
+          >
+        </div>
+      </div>
+
+      <!-- Product Catagory List -->
+      <div class="card" style="width: 18rem">
+        <img
+          src="/Images/interface-design-abstract-concept-illustration-user-interface-engineering-visual-element-create-website-application-responsive-design-usability-test-hierarchy_335657-3345.avif"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title">CATEGORY LIST</h5>
+          <p class="card-text">
+            Seach the available category for product.You can add new , edit or
+            delete existing product from here .
+          </p>
+          <a routerLink="/DashBoard/CategoryList" class="btn btn-success"
+            >Show</a
+          >
+        </div>
+      </div>
+
+      <!-- Product Menu List -->
+      <div class="card" style="width: 18rem">
+        <img
+          src="/Images/delicious-food-menu-restaurant-flyer-design_605245-13777.avif"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title">MENU LIST</h5>
+          <p class="card-text">
+            Seach the available menu details for product.You can add new , edit
+            or delete existing menu from here .
+          </p>
+          <a routerLink="/DashBoard/MenuList" class="btn btn-success">Show</a>
+        </div>
+      </div>
+
+      <!-- Product Taxtaion List -->
+      <div class="card" style="width: 18rem">
+        <img src="/Images/Taxation.png" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">TAX DETAILS</h5>
+          <p class="card-text">
+            Seach the available taxation details for product.You can add new ,
+            edit or delete existing taxes from here .
+          </p>
+          <a routerLink="/DashBoard/Taxation" class="btn btn-success">Show</a>
+        </div>
+      </div>
+
+      <!-- Product Addon List -->
+      <div class="card" style="width: 18rem">
+        <img
+          src="/Images/features-overview-concept-illustration_114360-1500.avif"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title">ADD ON LIST</h5>
+          <p class="card-text">
+            Seach here the product addOn delatis . You can edit or delete
+            existing addOn Option from here .
+          </p>
+          <a routerLink="/DashBoard/AddonList" class="btn btn-success">Show</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

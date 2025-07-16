@@ -1,0 +1,10 @@
+::selection {
+  background-color: #ff6347; /* Tomato */
+  color: white;
+}
+
+/* this is for firefox */
+::-moz-selection {
+  background-color: #ff6347; /* Tomato */
+  color: white;
+}

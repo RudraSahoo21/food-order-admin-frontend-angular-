@@ -1,0 +1,35 @@
+<div class="card mt-3" [formGroup]="searchConfigForm">
+  <div class="card-header">
+    <h5 class="card-title">Search Configuration</h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col menuLabel">
+        <label class="color-theme-black mb-2">Add Keyword</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Tags"
+          formControlName="tags"
+        />
+        <button type="button" class="mt-1" id="addButton" (click)="add()">
+          Add
+        </button>
+        <p>
+          Note: Search keywords will help your customers by showing relevant
+          products when searching for a wide variety of keywords
+        </p>
+      </div>
+
+      <!-- Display FormArray items -->
+      <div class="spanDiv">
+        <span *ngFor="let tagCtrl of tagsArray.controls; let i = index">
+          {{ tagCtrl.value }}
+          <button id="cancelBtn" (click)="remove(i)">
+            <i class="bi bi-x-circle-fill black-icon"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

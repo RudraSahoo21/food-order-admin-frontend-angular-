@@ -1,0 +1,191 @@
+<!-- <p>scheduled-order-configuration works!</p> -->
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-title">Scheduled Order Configuration</h6>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="slotBooking">
+      <div class="row">
+        <div class="col-12 col-md-12 mb-2">
+          <div class="row">
+            <label class="col-6 col-md-4">Allow Scheduling</label>
+            <span class="col-6 col-md-8">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="allow_scheduling"
+                (click)="checkboxClicked($event)"
+              />
+            </span>
+          </div>
+        </div>
+
+        @if(slotBooking.get('allow_scheduling')?.value == true){
+        <!-- minimum duration -->
+        <div class="col-12 col-md-12">
+          <div class="row">
+            <label class="col-12 col-md-4">Minimum Duration</label>
+            <span class="col-12 col-md-8">
+              <select
+                class="form-select col-md-8"
+                formControlName="mini_duration"
+                (change)="fromvaluescheck()"
+                [ngClass]="{
+                  'is-invalid':
+                    slotBooking.controls['mini_duration'].invalid &&
+                    (slotBooking.controls['mini_duration'].touched ||
+                      slotBooking.controls['mini_duration'].dirty),
+                  'is-valid':
+                    slotBooking.controls['mini_duration'].valid &&
+                    (slotBooking.controls['mini_duration'].touched ||
+                      slotBooking.controls['mini_duration'].dirty)
+                }"
+              >
+                <option selected value="">Select Option</option>
+                <option
+                  *ngFor="let item of min_duration_list"
+                  value="{{ item.text }}"
+                >
+                  {{ item.text }}
+                </option>
+              </select>
+              <p class="small">
+                Orders will be accepted after specific hours. Can also be set
+                for individual products
+              </p>
+              <p
+                *ngIf="
+                  slotBooking.controls['mini_duration']?.invalid &&
+                  (slotBooking.controls['mini_duration']?.touched ||
+                    slotBooking.controls['mini_duration']?.dirty)
+                "
+              >
+                <small
+                  class="text-danger"
+                  *ngIf="slotBooking.controls['mini_duration']?.errors?.['required']"
+                  >Please Select an Option</small
+                >
+              </p>
+            </span>
+          </div>
+        </div>
+
+        <!-- maximum duration -->
+        <div class="col-12 col-md-12">
+          <div class="row">
+            <label class="col-12 col-md-4">Maximum Duration</label>
+            <span class="col-12 col-md-8">
+              <select
+                class="form-select"
+                formControlName="maxi_duration"
+                [ngClass]="{
+                  'is-invalid':
+                    slotBooking.controls['maxi_duration'].invalid &&
+                    (slotBooking.controls['maxi_duration'].touched ||
+                      slotBooking.controls['maxi_duration'].dirty),
+                  'is-valid':
+                    slotBooking.controls['maxi_duration'].valid &&
+                    (slotBooking.controls['maxi_duration'].touched ||
+                      slotBooking.controls['maxi_duration'].dirty)
+                }"
+              >
+                <option selected value>Select Option</option>
+                <option
+                  *ngFor="let item of max_duration_list"
+                  value="{{ item.hour }}"
+                >
+                  {{ item.hour }} &nbsp;{{ item.text }}
+                </option>
+              </select>
+              <p class="small">
+                Orders will not be accepted beyond this period from current date
+                time
+              </p>
+              <p
+                *ngIf="
+                  slotBooking.controls['maxi_duration']?.invalid &&
+                  (slotBooking.controls['maxi_duration']?.touched ||
+                    slotBooking.controls['maxi_duration']?.dirty)
+                "
+              >
+                <small
+                  class="text-danger"
+                  *ngIf="slotBooking.controls['maxi_duration']?.errors?.['required']"
+                >
+                  Please Select an Option</small
+                >
+              </p>
+            </span>
+          </div>
+        </div>
+
+        <!-- Slot Hour Gap -->
+        <div class="col-12 col-md-12">
+          <div class="row">
+            <label class="col-12 col-md-4">Slot Hours Gap</label>
+            <span class="col-12 col-md-8">
+              <select
+                class="form-select"
+                formControlName="hour_gap"
+                (change)="generateSlots()"
+                [ngClass]="{
+                  'is-invalid':
+                    slotBooking.controls['hour_gap'].invalid &&
+                    (slotBooking.controls['hour_gap'].touched ||
+                      slotBooking.controls['hour_gap'].dirty),
+                  'is-valid':
+                    slotBooking.controls['hour_gap'].valid &&
+                    (slotBooking.controls['hour_gap'].touched ||
+                      slotBooking.controls['hour_gap'].dirty)
+                }"
+              >
+                <option selected value="">Select Option</option>
+                <option
+                  *ngFor="let item of slot_hour_list"
+                  value="{{ item.hour }}"
+                >
+                  {{ item.hour }} &nbsp;{{ item.text }}
+                </option>
+              </select>
+              <p
+                *ngIf="
+                  slotBooking.controls['hour_gap']?.invalid &&
+                  (slotBooking.controls['hour_gap']?.touched ||
+                    slotBooking.controls['hour_gap']?.dirty)
+                "
+              >
+                <small
+                  class="text-danger"
+                  *ngIf="slotBooking.controls['hour_gap']?.errors?.['required']"
+                  >Please Select an Option</small
+                >
+              </p>
+            </span>
+          </div>
+        </div>
+
+        <!-- Slot Buttons -->
+        <div class="col-12 col-md-12 mt-3">
+          <div class="row">
+            <label class="col-12 col-md-12">Schedule Slots</label>
+            <div class="col-md-12 slots mt-2">
+              <div
+                class="slotInput"
+                *ngFor="let time of slots; let i = index"
+                [ngClass]="checkedSlots[i]"
+                (click)="selectSlot(i)"
+              >
+                <input type="checkbox" class="btn-check" /><label
+                  class="btn mr-2 square-label"
+                >
+                  {{ time }}</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </form>
+  </div>
+</div>

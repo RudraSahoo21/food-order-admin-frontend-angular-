@@ -1,0 +1,368 @@
+<!-- <p>footer works!</p> -->
+<div class="container pb-3" *ngIf="currentStatus && variantGroups.length > 0">
+  <div class="card">
+    <div class="card-header">
+      <h6 class="card-title">Variants List</h6>
+    </div>
+    <form class="card-body mb-3" [formGroup]="varientListForm">
+      <div formArrayName="variantGroups">
+        <div
+          class="variantGroups mb-4"
+          *ngFor="let variants of variantGroups.controls; let mainIndex = index"
+        >
+          <div [formGroupName]="mainIndex">
+            <!-- first Row -->
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <span>{{ mainIndex + 1 }} . </span>
+                <label>Varient Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Variant Name"
+                  formControlName="VariantName"
+                  [ngClass]="{
+                    'is-invalid':
+                      variants.get('VariantName')?.invalid &&
+                      variants.get('VariantName')?.touched,
+                    'is-valid':
+                      variants.get('VariantName')?.valid &&
+                      variants.get('VariantName')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="
+                    variants.get('VariantName')?.hasError('required') &&
+                    (variants.get('VariantName')?.touched ||
+                      variants.get('VariantName')?.dirty)
+                  "
+                >
+                  <small class="text-danger">Variant Name Required</small>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 product-type">
+                <div class="form-check">
+                  <input
+                    id="veg"
+                    type="radio"
+                    formControlName="selectedOption"
+                    value="Veg"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    &nbsp;Veg
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    id="Non-veg"
+                    type="radio"
+                    value="Non-Veg"
+                    formControlName="selectedOption"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    &nbsp;Non-veg
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    id="Egg"
+                    type="radio"
+                    formControlName="selectedOption"
+                    value="Egg"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    &nbsp;Egg
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    id="Jain"
+                    type="radio"
+                    formControlName="selectedOption"
+                    value="Jain"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    &nbsp;Jain
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    id="None"
+                    type="radio"
+                    formControlName="selectedOption"
+                    value="None"
+                  />
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    &nbsp;None
+                  </label>
+                </div>
+              </div>
+              <div class="col-12 col-md-4 status">
+                <label class="form-label text-danger" *ngIf="mainIndex == 0"
+                  >DEFAULT</label
+                >
+                <label
+                  class="form-label c-pointer"
+                  *ngIf="mainIndex > 0"
+                  (click)="removeFormGroups(mainIndex)"
+                >
+                  REMOVE</label
+                >
+              </div>
+            </div>
+
+            <!-- second row -->
+            <div class="row calculation mt-3">
+              <div
+                class="row dynamicFields"
+                *ngFor="let controlKey of getControlKeys(variants)"
+              >
+                <div class="col-md-2" *ngIf="controlKey !== '_id'">
+                  <label class="form-label"
+                    >{{ controlKey | titlecase }} *</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [formControlName]="controlKey"
+                    [placeholder]="controlKey | titlecase"
+                    [ngClass]="{
+                      'is-invalid':
+                        variants.get(controlKey)?.invalid &&
+                        (variants.get(controlKey)?.touched ||
+                          variants.get(controlKey)?.dirty),
+                      'is-valid':
+                        variants.get(controlKey)?.valid &&
+                        variants.get(controlKey)?.touched
+                    }"
+                  />
+                  <div *ngIf="variants.get(controlKey)?.hasError('required')">
+                    <small
+                      class="text-danger"
+                      for="controlKey"
+                      *ngIf="
+                        variants.get(controlKey)?.invalid &&
+                        (variants.get(controlKey)?.touched ||
+                          variants.get(controlKey)?.dirty)
+                      "
+                    >
+                      Please Enter {{ controlKey }}</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-2">
+                <label class="form-label" for="sku">SKU *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="SKU"
+                  formControlName="sku"
+                  [ngClass]="{
+                    'is-invalid':
+                      variants.get('sku')?.invalid &&
+                      variants.get('sku')?.touched,
+                    'is-valid':
+                      variants.get('sku')?.valid && variants.get('sku')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="
+                    variants.get('sku')?.hasError('required') &&
+                    (variants.get('sku')?.touched || variants.get('sku')?.dirty)
+                  "
+                >
+                  <small class="text-danger" for="sku">Please Enter SKU</small>
+                </div>
+              </div>
+              <div class="col-12 col-md-2">
+                <label class="form-label" for="Stock">Stock *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Stock"
+                  formControlName="Stock"
+                  [ngClass]="{
+                    'is-invalid':
+                      variants.get('Stock')?.invalid &&
+                      variants.get('Stock')?.touched,
+                    'is-valid':
+                      variants.get('Stock')?.valid &&
+                      variants.get('Stock')?.touched
+                  }"
+                />
+                <div
+                  *ngIf="
+                    variants.get('Stock')?.hasError('required') &&
+                    (variants.get('Stock')?.touched ||
+                      variants.get('Stock')?.dirty)
+                  "
+                >
+                  <small class="text-danger">Please Enter Stock</small>
+                </div>
+              </div>
+              <div class="col-12 col-md-2">
+                <label class="form-label" for="MRP">MRP</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="MRP"
+                  formControlName="MRP"
+                />
+              </div>
+              <div class="col-12 col-md-2">
+                <label class="form-label" for="Price">Price *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Price"
+                  formControlName="Price"
+                  [ngClass]="{
+                    'is-invalid':
+                      variants.get('Price')?.invalid &&
+                      variants.get('Price')?.touched,
+                    'is-valid':
+                      variants.get('Price')?.valid &&
+                      variants.get('Price')?.touched
+                  }"
+                  (keyup)="calculation(mainIndex)"
+                />
+                <div
+                  *ngIf="
+                    variants.get('Price')?.hasError('required') &&
+                    (variants.get('Price')?.touched ||
+                      variants.get('Price')?.dirty)
+                  "
+                >
+                  <small class="text-danger">Please Enter Price</small>
+                </div>
+              </div>
+
+              <!-- calculation  Div-->
+              <div class="col-12 col-md-6">
+                <div class="price_breakup_items row">
+                  <div class="col-md-2">
+                    <div>
+                      {{
+                        variantGroups.at(mainIndex).get("sellingPrice")?.value
+                          | currency : "INR"
+                      }}
+                    </div>
+                    <div class="small">Selling Price</div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="addition">
+                      {{
+                        variantGroups.at(mainIndex).get("commission")?.value
+                          | currency : "INR"
+                      }}
+                    </div>
+                    <div class="small">Commission (12%)</div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="addition">
+                      {{
+                        variantGroups.at(mainIndex).get("tax")?.value
+                          | currency : "INR"
+                      }}
+                    </div>
+                    <div class="small">Tax</div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="addition">
+                      {{ packageingCharge | currency : "INR" }}
+                    </div>
+                    <div class="small">Packaging Charg</div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="total">
+                      {{
+                        variantGroups.at(mainIndex).get("totalCost")?.value
+                          | currency : "INR"
+                      }}
+                    </div>
+                    <div class="small">Customer Price</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- AddOn Section -->
+            <div class="col-md-2 mt-3" *ngIf="isVisiableAddon">
+              <button
+                type="button"
+                class="btn btn-dark col-md-12"
+                (click)="addAddOnsModalOpen(mainIndex)"
+              >
+                Add AddOns
+              </button>
+            </div>
+
+            <!-- AddOn Items -->
+            <div class="row p-2" formArrayName="variantAddOns">
+              <div
+                class="col-12 col-md-4"
+                *ngFor="
+                  let addOns of getVariantAddOns(mainIndex).controls;
+                  let i = index
+                "
+                [formGroupName]="i"
+              >
+                <h5>
+                  <span><b>Category :</b></span
+                  ><span>{{ addOns.get("addonCategory")?.value }} </span>
+                </h5>
+                <!-- body -->
+                <div class="col-12 col-md-12 sticker">
+                  <div class="col-1 col-md-1 colorSticker">
+                    @if (addOns.get("type")?.value == "Veg") {
+                    <i class="bi bi-record-btn" style="color: green"></i>
+                    } @if (addOns.get("type")?.value == "Non-Veg") {
+                    <i class="bi bi-record-btn" style="color: red"></i>
+                    } @if (addOns.get("type")?.value == "Jain") {
+                    <i class="bi bi-record-btn" style="color: orangered"></i>
+                    } @if (addOns.get("type")?.value == "None") {
+                    <i class="bi bi-record-btn" style="color: gray"></i>
+                    }@if (addOns.get("type")?.value == "Egg") {
+                    <i class="bi bi-record-btn" style="color: brown"></i>
+                    }
+                  </div>
+                  <div class="col-5 col-md-4 name">
+                    <div>{{ addOns.get("addonName")?.value }}</div>
+                    <div id="desc">
+                      {{ addOns.get("description")?.value }}
+                    </div>
+                  </div>
+                  <div class="col-5 col-md-6 price">
+                    <div>
+                      <span style="color: gray">INR &nbsp;</span>
+                      <span style="color: rgb(18 127 18)">
+                        {{ addOns.get("addonPrice")?.value | currency : "INR" }}
+                      </span>
+                    </div>
+                    <small
+                      >+ {{ addOns.get("taxrate")?.value | currency : "INR"
+                      }}<span> tax &#64; </span
+                      >{{ addOns.get("taxPercentage")?.value }} %</small
+                    >
+                  </div>
+                  <div
+                    class="col-1 col-md-1 remove"
+                    (click)="removeAddOns(mainIndex, i)"
+                  >
+                    <i class="bi bi-trash3"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--  -->
+            <!--  -->
+            <!-- add on items will loop here -->
+            <!--  -->
+            <!--  -->
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

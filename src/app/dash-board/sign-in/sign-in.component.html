@@ -1,0 +1,70 @@
+<div
+  class="container d-flex justify-content-center align-items-center min-vh-100"
+>
+  <div class="card shadow-sm p-4 signin-card w-100" style="max-width: 600px">
+    <h3 class="text-center mb-4">Log In</h3>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-envelope-fill"></i>
+          </span>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Enter your email"
+            formControlName="email"
+          />
+        </div>
+        <div
+          class="text-danger mt-1"
+          *ngIf="
+            loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+          "
+        >
+          Please enter a valid email.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-group-text">
+            <i class="bi bi-lock-fill"></i>
+          </span>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Enter your password"
+            formControlName="password"
+          />
+        </div>
+        <div
+          class="text-danger mt-1"
+          *ngIf="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        >
+          Password is required.
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-success w-100"
+        [disabled]="loginForm.invalid"
+      >
+        Sign In
+      </button>
+
+      <p class="text-center mt-3">
+        Don't have an account? <a routerLink="/DashBoard/SingUP">Sign Up</a>
+      </p>
+    </form>
+  </div>
+</div>

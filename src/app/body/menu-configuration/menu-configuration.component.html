@@ -1,0 +1,34 @@
+<div class="card mt-3" [formGroup]="menuForm">
+  <div class="card-header">
+    <h6 class="card-title">Menu Configuration</h6>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col menuLabel">
+        <label class="color-theme-black mb-2">Menu Label</label>
+        <select class="form-select" formControlName="selectedItem">
+          <option *ngFor="let items of menu_label">
+            {{ items.name }}
+          </option>
+        </select>
+        <button
+          type="button"
+          class="mt-1"
+          id="addButton"
+          (click)="selectedOptions()"
+        >
+          Add
+        </button>
+      </div>
+
+      <div class="spanDiv">
+        <span *ngFor="let control of selectedLabel.controls; let i = index">
+          {{ getLabelName(control.value) }}
+          <button id="cancelBtn" (click)="removeTag(i)">
+            <i class="bi bi-x-circle-fill black-icon"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

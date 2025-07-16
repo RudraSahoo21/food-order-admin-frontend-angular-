@@ -1,0 +1,24 @@
+.container {
+  column-count: 2;
+}
+
+.col-12 {
+  break-inside: avoid;
+}
+
+.card {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  border-radius: 10px;
+}
+
+.product_type_weight {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 1000px) {
+  .container {
+    column-count: 1;
+  }
+}

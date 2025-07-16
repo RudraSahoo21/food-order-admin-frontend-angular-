@@ -1,0 +1,102 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-title mb-0">Basic Information</h6>
+  </div>
+
+  <form class="card-body" [formGroup]="basicInfo_validation">
+    <div class="row">
+      <div class="col">
+        <label class="color-theme-black">Product Name *</label>
+        <input
+          type="text"
+          formControlName="productName"
+          required
+          name="productName"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              basicInfo_validation.controls['productName'].invalid &&
+              basicInfo_validation.controls['productName'].touched
+          }"
+          placeholder="Product Name"
+        />
+
+        <div
+          class="text-danger"
+          *ngIf="
+            basicInfo_validation.controls['productName']?.invalid &&
+            (basicInfo_validation.controls['productName']?.touched ||
+              basicInfo_validation.controls['productName']?.dirty)
+          "
+        >
+          <small
+            *ngIf="
+              basicInfo_validation.controls['productName']?.errors?.['required']
+            "
+            >Product name is required</small
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col">
+        <label class="color-theme-black">Short Description *</label>
+        <textarea
+          formControlName="shortDescription"
+          name="description"
+          required
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              basicInfo_validation.controls['shortDescription'].invalid &&
+              (basicInfo_validation.controls['shortDescription'].touched ||
+                basicInfo_validation.controls['shortDescription'].dirty),
+            'is-valid':
+              basicInfo_validation.controls['shortDescription'].valid &&
+              (basicInfo_validation.controls['shortDescription'].touched ||
+                basicInfo_validation.controls['shortDescription'].dirty)
+          }"
+          placeholder="A short description for the items or products within this category"
+        ></textarea>
+
+        <div
+          class="text-danger"
+          *ngIf="
+            basicInfo_validation.controls['shortDescription']?.invalid &&
+            (basicInfo_validation.controls['shortDescription']?.touched ||
+              basicInfo_validation.controls['shortDescription']?.dirty)
+          "
+        >
+          <small
+            *ngIf="
+              basicInfo_validation.controls['shortDescription']?.errors?.[
+                'required'
+              ]
+            "
+            >Product Description is required</small
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col">
+        <label class="form-check-label" for="flexSwitchCheckDefault"
+          >Product Status</label
+        >
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="flexSwitchCheckDefault"
+            (click)="statusChange($event)"
+            formControlName="productStatus"
+          />
+        </div>
+        <p *ngIf="isActive">Active : Orders Accepted</p>
+        <p *ngIf="!isActive">Inactive : Orders Not Accepting</p>
+      </div>
+    </div>
+  </form>
+</div>

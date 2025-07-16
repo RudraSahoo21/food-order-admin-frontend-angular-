@@ -1,0 +1,335 @@
+<!-- <p>category-list works!</p> -->
+
+<div class="card">
+  <h4 class="card-titel">🗂️ Category & Sub-Category</h4>
+  <div class="card-body">
+    <!-- toolbar -->
+    <div class="toolbar">
+      <div class="left-group">
+        <button
+          type="button"
+          class="add-btn"
+          data-bs-toggle="modal"
+          data-bs-target="#addNewModal"
+          title="Add New Items"
+        >
+          <i class="bi bi-plus-circle"></i> &nbsp; Add New
+        </button>
+        <button class="reset-btn btn btn-warning" (click)="reset()">
+          Reset
+        </button>
+      </div>
+      <div class="right-group">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search by Category"
+        />
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search by Subcategory"
+        />
+        <button class="search-btn">🔍 Search</button>
+      </div>
+    </div>
+
+    <!-- table -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Sl no.</th>
+            <th>Category</th>
+            <th>Sl no.</th>
+            <th>Sub-Category</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="!isLoading">
+            <ng-container *ngFor="let items of getCurrentPageItems()">
+              <tr
+                class="bodyrow"
+                *ngFor="let subItem of items.subcategories; let i = index"
+              >
+                <td *ngIf="i === 0" [attr.rowspan]="items.subcategories.length">
+                  {{ items.catindex }}
+                </td>
+                <td *ngIf="i === 0" [attr.rowspan]="items.subcategories.length">
+                  {{ items.catName }}
+                </td>
+                <td>{{ subItem.subcatIndex }}</td>
+                <td>{{ subItem.subcatName }}</td>
+                <td *ngIf="i === 0" [attr.rowspan]="items.subcategories.length">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    title="Edit taxes"
+                    data-bs-toggle="modal"
+                    data-bs-target="#EditModal"
+                    (click)="sendEditData(items)"
+                  >
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  &nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    title="Remove Taxes"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+          <tr *ngIf="isLoading">
+            <td colspan="100%">
+              <div class="d-flex justify-content-center">
+                <div class="spinner-border m-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="!isLoading && combineListSubArray.length === 0">
+            <td
+              colspan="100%"
+              style="text-align: center; vertical-align: middle"
+            >
+              No Data Found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- pagination -->
+      <div class="pagination-controls">
+        <button
+          type="button"
+          class="btn btn-secondary paginationBtn"
+          (click)="prevPage()"
+          [disabled]="currentpage === 1"
+        >
+          <i class="bi bi-arrow-left-circle"></i>
+        </button>
+        <span>{{ currentpage }} / {{ totalPages }}</span>
+        <button
+          type="button"
+          class="btn btn-secondary paginationBtn"
+          (click)="nextPage()"
+          [disabled]="currentpage === totalPages"
+        >
+          <i class="bi bi-arrow-right-circle"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal for add new catagory and sub catagory -->
+<div
+  class="modal fade"
+  id="addNewModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <form
+      class="modal-content"
+      [formGroup]="addNewForm"
+      (ngSubmit)="addFormSubmit()"
+    >
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Add New Catagory and Its Sub-Catagory
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label for="catagoryname" class="form-label">Catagory Name :</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="CatagoryName"
+            placeholder="write the catagoryname here..."
+          />
+          <div
+            *ngIf="
+              addNewForm.get('CatagoryName')?.touched &&
+              addNewForm.get('CatagoryName')?.hasError('required')
+            "
+          >
+            <small class="text-danger">Please Enter The Catagory Name *</small>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label for="subcatagoryname" class="form-label"
+            >Sub-Catagory Name :</label
+          >
+          <button
+            type="button"
+            class="btn btn-success plus-button"
+            title="Add SubCatagories"
+            (click)="addNewControl()"
+          >
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+        <div formArrayName="SubcatagoryName">
+          <div
+            *ngFor="let control of subCatArr.controls; let i = index"
+            class="item-row"
+          >
+            <div id="subcat-row">
+              <input
+                [formControlName]="i"
+                placeholder="enter subcatagory name..."
+                class="form-control"
+              />
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="removeItem(i)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <div
+              *ngIf="
+                subCatArr.at(i)?.touched &&
+                subCatArr.at(i)?.hasError('required')
+              "
+            >
+              <small class="text-danger">please enter sub-catagory name*</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-bs-dismiss="modal"
+          (click)="resetForm()"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-success">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- modal for edit catagory and sub catagory -->
+<div
+  class="modal fade"
+  id="EditModal"
+  data-bs-backdrop='"static"'
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <form class="modal-content" [formGroup]="updatedForm">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Edit Catagory & Subcatagory Details
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label for="catagoryname" class="form-label">Catagory Name :</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="CatagoryName"
+            placeholder="write the catagoryname here..."
+          />
+          <div
+            *ngIf="
+              updatedForm.get('CatagoryName')?.touched &&
+              updatedForm.get('CatagoryName')?.hasError('required')
+            "
+          >
+            <small class="text-danger">Please Enter The Catagory Name *</small>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label for="subcatagoryname" class="form-label"
+            >Sub-Catagory Name :</label
+          >
+          <button
+            type="button"
+            class="btn btn-success plus-button"
+            title="Add SubCatagories"
+            (click)="addNewControlUpdate()"
+          >
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+        <div formArrayName="SubcatagoryName">
+          <div
+            *ngFor="let control of subCatArrUpdate.controls; let i = index"
+            [formGroupName]="i"
+            class="item-row"
+          >
+            <div id="subcat-row">
+              <input
+                formControlName="subcatName"
+                placeholder="enter subcatagory name..."
+                class="form-control"
+              />
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="removeItem(i)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <div
+              *ngIf="
+                subCatArr.at(i)?.touched &&
+                subCatArr.at(i)?.hasError('required')
+              "
+            >
+              <small class="text-danger">please enter sub-catagory name*</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-bs-dismiss="modal"
+          (click)="resetForm()"
+        >
+          Cancel
+        </button>
+        <button type="button" class="btn btn-success">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

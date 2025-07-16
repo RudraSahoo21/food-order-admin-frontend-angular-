@@ -1,0 +1,171 @@
+<!-- modal Component for AddOns -->
+<div class="modal-overlay" *ngIf="isModalOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Add Addons</h1>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="closeModal()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="addonForm" (ngSubmit)="onSubmit()">
+        <!-- Addon Category -->
+        <label class="col-12 col-md-12 form-label">Addon Category Name</label>
+        <select
+          class="form-select col-md-12"
+          formControlName="addonCategory"
+          aria-label="Select addon category"
+          (click)="formReset()"
+          [ngClass]="{
+            'is-invalid':
+              isformSubmitted && addonForm.get('addonCategory')?.invalid,
+            'is-valid': addonForm.get('addonCategory')?.valid
+          }"
+        >
+          <option selected value="">Select Category</option>
+          <option value="AddOn">AddOn</option>
+          <option value="Extras">Extras</option>
+          <option value="Customs">Customs</option>
+          <option value="Toppings">Toppings</option>
+        </select>
+        <div
+          *ngIf="
+            addonForm.get('addonCategory')?.invalid &&
+            addonForm.get('addonCategory')?.touched
+          "
+        >
+          <small class="text-danger">Please select an Addon Category</small>
+        </div>
+
+        <!-- Search Addon -->
+        <label class="col-12 col-md-12 form-label">Search Addon</label>
+        <input
+          class="col-12 col-md-12 form-control"
+          placeholder="Addon Name"
+          type="text"
+          formControlName="addonName"
+          aria-label="Search Addon"
+          (keyup)="SearchedList()"
+          (focus)="showSuggestions = true"
+          [ngClass]="{
+            'is-invalid':
+              isformSubmitted && addonForm.get('addonName')?.invalid,
+            'is-valid': addonForm.get('addonName')?.valid
+          }"
+        />
+
+        <!-- Show matching results -->
+        <ul
+          *ngIf="showSuggestions && filteredList.length > 0"
+          class="dropdown-list"
+        >
+          <li
+            *ngFor="let addon of filteredList"
+            (click)="
+              selectAddon(
+                addon.name,
+                addon.price,
+                addon.tax,
+                addon.description,
+                addon.type
+              )
+            "
+            class="dropdown-item"
+          >
+            {{ addon.name }}
+          </li>
+        </ul>
+
+        <div
+          *ngIf="
+            addonForm.get('addonName')?.invalid &&
+            addonForm.get('addonName')?.touched
+          "
+        >
+          <small class="text-danger">Please choose an Addon</small>
+        </div>
+
+        <!-- Variant Specific Price -->
+        <div class="row">
+          <div class="col-md-7 col-7">
+            <label class="col-12 col-md-12 form-label"
+              >Variant Specific Price</label
+            >
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Price of addon for this variant"
+              formControlName="addonPrice"
+              aria-label="Addon price"
+              [ngClass]="{
+                'is-invalid':
+                  isformSubmitted && addonForm.get('addonPrice')?.invalid,
+                'is-valid': addonForm.get('addonPrice')?.valid
+              }"
+              (keyup)="taxRate()"
+            />
+            <div
+              *ngIf="
+                addonForm.get('addonPrice')?.invalid &&
+                addonForm.get('addonPrice')?.touched
+              "
+            >
+              <small class="text-danger"
+                >Please provide a price for the addon</small
+              >
+            </div>
+          </div>
+          <!-- precentage -->
+          <div
+            class="clo-md-5 col-5 precentage"
+            *ngIf="addonForm.get('addonPrice')?.valid"
+          >
+            <span>
+              + {{ addonForm.get("taxrate")?.value | currency : "INR"
+              }}<span> tax &#64;</span>
+              {{ addonForm.get("taxPercentage")?.value }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn save">Save</button>
+          <button
+            type="button"
+            class="btn btn-dark discard"
+            (click)="closeModal()"
+          >
+            Discard
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" *ngIf="isDeleteModalOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Delete AddOns</h1>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        (click)="closeModal()"
+      ></button>
+    </div>
+    <div class="modal-body">Are you sure want to delete ?</div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">
+        No
+      </button>
+      <button type="button" class="btn btn-primary" (click)="OnRemove()">
+        Yes
+      </button>
+    </div>
+  </div>
+</div>

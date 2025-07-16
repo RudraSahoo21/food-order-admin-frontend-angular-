@@ -1,0 +1,54 @@
+<div class="card mt-3">
+  <div class="card-header">
+    <h6 class="card-title">Categorization</h6>
+  </div>
+  <form class="card-body" [formGroup]="categorizationForm">
+    <div class="row">
+      <div class="col">
+        <label class="color-theme-black mb-2">Product Category *</label>
+        <select class="form-select" formControlName="selectedCatagory">
+          <option [value]="null">Select Category</option>
+          <option
+            *ngFor="let category of catagories"
+            [value]="category.Category_id"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+        <div
+          class="text-danger"
+          *ngIf="
+            categorizationForm.get('selectedCatagory')?.hasError('required') &&
+            categorizationForm.get('selectedCatagory')?.touched
+          "
+        >
+          <small>Please select a valid category.</small>
+        </div>
+      </div>
+
+      <div class="col">
+        <label class="color-theme-black mb-2">Product Sub-Category *</label>
+        <select class="form-select" formControlName="selectedSubCatagory">
+          <option [value]="null">Select Sub-Category</option>
+          <option
+            *ngFor="let subCategory of filteredSubCategories"
+            [value]="subCategory.SubCategory_id"
+          >
+            {{ subCategory.name }}
+          </option>
+        </select>
+        <div
+          class="text-danger"
+          *ngIf="
+            categorizationForm
+              .get('selectedSubCatagory')
+              ?.hasError('required') &&
+            categorizationForm.get('selectedSubCatagory')?.touched
+          "
+        >
+          <small>Please select a valid sub-category.</small>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,16 @@
+.toast {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2000;
+}
+
+.toast-body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: large;
+}

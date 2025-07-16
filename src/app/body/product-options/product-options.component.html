@@ -1,0 +1,41 @@
+<!-- <p>product-options works!</p> -->
+<div class="card mt-3">
+  <div class="card-header">
+    <div class="card-title">
+      <h6>Product Options</h6>
+    </div>
+  </div>
+  <div class="card-body">
+    <form class="row" [formGroup]="productOptionsForm">
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <label class="col-12 col-md-12 mb-1">Varient</label>
+          <div class="col-12 col-md-12">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="product_has_variants"
+              (click)="checkedVeriants($event)"
+            />
+            <span>Product Has Variants</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <label class="col-12 col-md-12 mb-1">Extras & Addons</label>
+          <div class="col-12 col-md-12">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="product_has_addOns"
+              (click)="checkedAddOns($event)"
+              (click)="toggleFooterAddOn($event)"
+            />
+            <span>Product Has Addons</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

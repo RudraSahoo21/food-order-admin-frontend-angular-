@@ -1,0 +1,164 @@
+<!-- <p>pricing works!</p> -->
+<div class="card mt-3">
+  <!-- card-header -->
+  <div class="card-header">
+    <div class="card-title">
+      <h6>Priceing</h6>
+    </div>
+  </div>
+  <!-- card-body -->
+  <div class="card-body">
+    <form [formGroup]="priceingForm" (keyup)="valuechange()">
+      <div class="product_inputs row">
+        <div class="col-md-6 mb-3">
+          <label for="selling_price">Product Selling Price *</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Price (Exclusive of Tax) in INR"
+            formControlName="sellingPrice"
+            [ngClass]="{
+              'is-invalid':
+                priceingForm.controls['sellingPrice'].invalid &&
+                (priceingForm.controls['sellingPrice'].touched ||
+                  priceingForm.controls['sellingPrice'].dirty),
+              'is-valid':
+                priceingForm.controls['sellingPrice'].valid &&
+                (priceingForm.controls['sellingPrice'].touched ||
+                  priceingForm.controls['sellingPrice'].dirty)
+            }"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              priceingForm.controls['sellingPrice'].invalid &&
+              (priceingForm.controls['sellingPrice'].touched ||
+                priceingForm.controls['sellingPrice'].dirty)
+            "
+          >
+            <small
+              *ngIf="priceingForm.controls['sellingPrice'].errors?.['required']"
+              >Please enter valid price</small
+            >
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Product MRP or Sticker Price</label>
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Prouct Price (Exclusive of Tax)"
+            formControlName="mrp"
+          />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="mb-2">Packaging Charge *</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Packaging Charge (INR) if Applicable"
+            formControlName="packageingCharge"
+            [ngClass]="{
+              'is-invalid':
+                priceingForm.controls['packageingCharge'].invalid &&
+                (priceingForm.controls['packageingCharge'].touched ||
+                  priceingForm.controls['packageingCharge'].dirty),
+              'is-valid':
+                priceingForm.controls['packageingCharge'].valid &&
+                (priceingForm.controls['packageingCharge'].touched ||
+                  priceingForm.controls['packageingCharge'].dirty)
+            }"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              priceingForm.controls['packageingCharge'].invalid &&
+              (priceingForm.controls['packageingCharge'].touched ||
+                priceingForm.controls['packageingCharge'].dirty)
+            "
+          >
+            <small
+              *ngIf="priceingForm.controls['packageingCharge'].errors?.['required']"
+              >Please enter valid price</small
+            >
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="mb-2">Your Purchase or input Cost</label>
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Products Actual Cost of Purchase Price"
+            formControlName="purchaseCost"
+          />
+        </div>
+        <div class="col-md-12 mb-3">
+          <label class="mb-2">Tax Rate *</label>
+          <select
+            class="form-select"
+            formControlName="tax"
+            [ngClass]="{
+              'is-invalid':
+                priceingForm.controls['tax'].invalid &&
+                (priceingForm.controls['tax'].touched ||
+                  priceingForm.controls['tax'].dirty),
+              'is-valid':
+                priceingForm.controls['tax'].valid &&
+                (priceingForm.controls['tax'].touched ||
+                  priceingForm.controls['tax'].dirty)
+            }"
+            (change)="updateInFooter()"
+          >
+            <option selected value>Select Tax</option>
+            <option *ngFor="let i of tax_rate" [ngValue]="i">
+              {{ i.text }}
+            </option>
+          </select>
+          <div
+            class="text-danger"
+            *ngIf="
+              priceingForm.controls['tax'].invalid &&
+              (priceingForm.controls['tax'].touched ||
+                priceingForm.controls['tax'].dirty)
+            "
+          >
+            <small *ngIf="priceingForm.controls['tax'].errors?.['required']"
+              >Please select a Tax</small
+            >
+          </div>
+        </div>
+        <div class="col-md-12 mb-3"></div>
+      </div>
+
+      <!-- calculation div -->
+      <div class="col-md-12 mb-3 calculationDiv">
+        <div class="price_breakup_items row">
+          <div class="col-md-2">
+            <div>
+              {{ sellingprice | currency : "INR" }}
+            </div>
+            <div class="small">Selling Price</div>
+          </div>
+          <div class="col-md-2">
+            <div class="addition">{{ commission | currency : "INR" }}</div>
+            <div class="small">Commission (12%)</div>
+          </div>
+          <div class="col-md-2">
+            <div class="addition">{{ final_tax_rate | currency : "INR" }}</div>
+            <div class="small">Tax</div>
+          </div>
+          <div class="col-md-2">
+            <div class="addition">{{ packCharge | currency : "INR" }}</div>
+            <div class="small">Packaging Charg</div>
+          </div>
+          <div class="col-md-2">
+            <div class="total">{{ customerPrice | currency : "INR" }}</div>
+            <div class="small">Customer Price</div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

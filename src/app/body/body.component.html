@@ -1,0 +1,42 @@
+<div class="container mt-0 pb-3">
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <app-basic-information></app-basic-information>
+    </div>
+    <div class="col-12 col-md-12">
+      <app-categorization></app-categorization>
+    </div>
+    <div class="col-12 col-md-12">
+      <div class="child product_type_weight">
+        <app-product-type></app-product-type>
+        <app-product-weight></app-product-weight>
+      </div>
+    </div>
+    <div class="col-12 col-md-12"><app-pricing></app-pricing></div>
+    <div class="col-12 col-md-12"><app-inventory></app-inventory></div>
+    <div class="col-12 col-md-12"><app-images></app-images></div>
+    <div class="col-12 col-md-12">
+      <app-menu-configuration></app-menu-configuration>
+    </div>
+    <div class="col-12 col-md-12">
+      <app-search-configuration></app-search-configuration>
+    </div>
+    <div class="col-12 col-md-12">
+      <app-scheduled-order-configuration></app-scheduled-order-configuration>
+    </div>
+    <div class="col-12 col-md-12">
+      <app-product-options
+        (ischeckedVeriants)="isVeriantChecked = $event"
+        (ischeckedAddOns)="isAddonChecked = $event"
+      ></app-product-options>
+    </div>
+    <div class="col-12 col-md-12" *ngIf="isVeriantChecked">
+      <app-manage-variants></app-manage-variants>
+    </div>
+    @if(isAddonChecked == true && isVeriantChecked== false){
+    <div class="col-12 col-md-12">
+      <app-addons></app-addons>
+    </div>
+    }
+  </div>
+</div>
