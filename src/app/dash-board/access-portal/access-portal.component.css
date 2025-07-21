@@ -1,0 +1,104 @@
+.access-portal-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  background-color: ghostwhite;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.permissions-fieldset {
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 2rem 1rem 1rem; /* extra top padding for legend */
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  background-color: #fff;
+  height: 250px; /* fixed height */
+  overflow: hidden;
+}
+
+.permissions-fieldset legend {
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  background-color: #fff;
+  padding: 0 0.5rem;
+  font-weight: 700;
+  color: #444;
+}
+
+.scrollable-content {
+  height: calc(100% - 2.5rem); /*  adjust for legend height */
+  overflow-y: auto;
+  padding-top: 0.5rem;
+  margin-left: 2rem;
+  margin-top: 1rem;
+}
+.scrollable-content hr {
+  margin-right: 3rem;
+}
+
+.permissions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.permission-checkbox {
+  flex: 1 1 45%;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.permission-checkbox input[type="checkbox"] {
+  margin-right: 0.5rem;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #007bff;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

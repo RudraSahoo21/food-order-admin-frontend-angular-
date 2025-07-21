@@ -1,0 +1,72 @@
+<div class="access-portal-container">
+  <h2>Admin Access Portal</h2>
+
+  <form [formGroup]="accessPortalForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="userSelect">Select User:</label>
+      <select
+        id="userSelect"
+        name="UserEmail"
+        formControlName="userId"
+        (change)="selectedUser($event)"
+      >
+        <option value="">-- Select User --</option>
+        <option *ngFor="let users of userDetailsArray" [value]="users._id">
+          {{ users.UserEmail }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          accessPortalForm.get('userId')?.touched &&
+          accessPortalForm.get('userId')?.invalid
+        "
+      >
+        <small class="text-danger">User is required.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="roleSelect">Assign Role:</label>
+      <select id="roleSelect" name="roleId" formControlName="roleId">
+        <option value="">-- Select Role --</option>
+        <option value="6874ae32b41e197b5e54f6b5">Admin</option>
+        <option value="6874af80b41e197b5e54f6b7">Sub-Admin</option>
+        <option value="6874be93b41e197b5e54f6c4">Taxation-Department</option>
+        <option value="687a0b93764c18e22ff48a64">Menu-Department</option>
+        <option value="">Addon-Department</option>
+        <option value="">Catagory-Department</option>
+      </select>
+      <div
+        *ngIf="
+          accessPortalForm.get('roleId')?.touched &&
+          accessPortalForm.get('roleId')?.invalid
+        "
+      >
+        <small class="text-danger">Role is required..</small>
+      </div>
+    </div>
+
+    <fieldset class="permissions-fieldset">
+      <legend>Assign Custom Permissions:</legend>
+      <div class="scrollable-content">
+        <div class="permissions-list" id="addon" formArrayName="customRoleId">
+          <label
+            class="permission-checkbox"
+            *ngFor="let perm of permissionsList"
+          >
+            <input
+              type="checkbox"
+              name="Custom-Permission"
+              [value]="perm.value"
+              [checked]="isChecked(perm.value)"
+              (change)="changeIsCheckedToggle($event)"
+            />
+            {{ perm.label }}
+          </label>
+        </div>
+      </div>
+    </fieldset>
+
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
