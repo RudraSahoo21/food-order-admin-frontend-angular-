@@ -69,6 +69,7 @@
             <td>{{ product.purchaseCost | currency : "INR" }}</td>
             <td>
               <button
+                *ngIf="UserRole == 'admin' || UserRole == 'sub-admin'"
                 type="button"
                 class="btn btn-primary"
                 (click)="edit(product.productId)"
@@ -78,6 +79,7 @@
               </button>
               &nbsp;
               <button
+                *ngIf="UserRole == 'admin'"
                 type="button"
                 class="btn btn-danger"
                 (click)="
@@ -92,6 +94,7 @@
         </tbody>
       </table>
     </div>
+    <!-- Pagenation -->
     <nav *ngIf="totalItems > pageSize" class="mt-3">
       <ul class="pagination justify-content-center">
         <li class="page-item" [class.disabled]="currentPage === 1">

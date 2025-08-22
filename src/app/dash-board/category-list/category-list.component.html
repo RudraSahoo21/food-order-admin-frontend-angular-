@@ -24,13 +24,25 @@
           type="text"
           class="search-input"
           placeholder="Search by Category"
+          #search_catagory
         />
         <input
           type="text"
           class="search-input"
           placeholder="Search by Subcategory"
+          #search_SubCatagories
         />
-        <button class="search-btn">🔍 Search</button>
+        <button
+          class="search-btn"
+          (click)="
+            searchCombinedInputs(
+              search_catagory.value,
+              search_SubCatagories.value
+            )
+          "
+        >
+          🔍 Search
+        </button>
       </div>
     </div>
 

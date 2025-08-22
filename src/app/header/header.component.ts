@@ -23,17 +23,24 @@ export class HeaderComponent {
   ) {}
 
   onSubmit(): void {
+    debugger;
     this.formService.validateAllForms();
     const isValid = this.formService.allFormsGroup.every((form) => form.valid);
+    this.formService.allFormsGroup.forEach((form) => {
+      console.log(form.value);
+    });
     if (isValid) {
       this.sendDataToServer();
+    }
+    if (!isValid) {
+      console.log('form is invalid', isValid);
     }
   }
 
   sendDataToServer() {
     const productdetailsObj = this.formService.productdetailsObj;
     const isEditMode = this.formService.getEditMode();
-    // debugger;
+    debugger;
     if (isEditMode) {
       // PUT or PATCH request for editing existing product
       this.api
@@ -42,13 +49,13 @@ export class HeaderComponent {
           next: (response) => {
             console.log('Product updated successfully:', response);
             this.formService.resetEditMode();
+            this.formService.resetForm();
             this.goToNavigationPage('Updated');
           },
           error: (error) => {
             console.error('Error updating product:', error);
           },
         });
-      //debugger;
     } else {
       debugger;
       // POST request for creating new product
@@ -62,7 +69,6 @@ export class HeaderComponent {
         },
       });
     }
-    //debugger;
   }
   goToNavigationPage(message: 'Added' | 'Updated'): void {
     this.router.navigate(['/done'], { state: { message } });

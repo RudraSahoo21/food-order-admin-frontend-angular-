@@ -147,7 +147,16 @@ export class ApiService {
 
   // fetch combined catagory and sub catagory list for admin table
   fetchCombinedCatSubcat(): Observable<any> {
-    return this.http.post<any>('http://localhost:3000/addCatSubcat', {});
+    const token = localStorage.getItem('token');
+    return this.http.post<any>(
+      'http://localhost:3000/addCatSubcat',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   }
 
   // update menu Label name
@@ -224,11 +233,29 @@ export class ApiService {
     );
   }
 
+  // User Signup
+  UserSignup(formdata: object): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/UserCreation', formdata);
+  }
+
   // User Login
   UserLogin(email: string, password: string): Observable<any> {
     return this.http.post<any>('http://localhost:3000/SignIn', {
       UserEmail: email,
       password: password,
     });
+  }
+
+  // fetching user details for access portal
+  fetchAllUsers(): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/admin/allusers', {});
+  }
+
+  // update user permission details by admin in accessportal
+  updateUserPermission(updatePermission: any): Observable<any> {
+    return this.http.patch<any>(
+      'http://localhost:3000/updateUserPermission',
+      updatePermission
+    );
   }
 }

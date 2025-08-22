@@ -163,8 +163,12 @@ export class MenuListComponent implements OnInit {
           this.reset();
         },
         error: (err) => {
-          console.log('Unable to update the updated name', err.message);
-          this.showToast(err.message, 'danger');
+          const msg =
+            err.error && err.error.message
+              ? err.error.message
+              : 'Unknown error occurred';
+          console.log('Error In delete the Menu List:', msg);
+          this.showToast(msg, 'danger');
         },
       });
     }

@@ -7,7 +7,6 @@ import {
   FormBuilder,
   FormGroup,
   FormArray,
-  Validator,
   Validators,
 } from '@angular/forms';
 
@@ -84,6 +83,47 @@ export class CategoryListComponent implements OnInit {
       },
     });
   }
+
+  // Serach catagory and sub catagory via name
+  searchCombinedInputs(cat: string, subcat: string): void {
+    this.isLoading = true;
+    setTimeout(() => {
+      const catText = cat.trim().toLowerCase();
+      const subText = subcat.trim().toLowerCase();
+      if (!catText && !subText) {
+        this.combineListSubArray = [...this.combineListMainArray]; // Show all if both empty
+      } else {
+        this.combineListSubArray = this.combineListMainArray
+          .map((item) => {
+            const catMatch = catText
+              ? item.catName.toLowerCase().includes(catText)
+              : true;
+            let filteredSubcats = item.subcategories;
+            if (subText) {
+              filteredSubcats = item.subcategories.filter((sub) =>
+                sub.subcatName.toLowerCase().includes(subText)
+              );
+            }
+            // If category AND subcategory must match when both inputs are filled
+            const condition =
+              (catText && subText && catMatch && filteredSubcats.length > 0) ||
+              (!catText && subText && filteredSubcats.length > 0) ||
+              (catText && !subText && catMatch);
+            if (condition) {
+              return {
+                ...item,
+                subcategories: filteredSubcats,
+              };
+            }
+            return null;
+          })
+          .filter((item) => item !== null); // remove nulls
+      }
+      this.currentpage = 1;
+      this.isLoading = false;
+    }, 500);
+  }
+
   // Pagenation
   currentpage: number = 1;
   itemsPerPage: number = 2;

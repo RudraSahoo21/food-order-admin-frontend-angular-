@@ -22,7 +22,6 @@ export class SideBarComponent implements OnInit {
       this.LocalStorageToken = token;
     });
     this.authService.user$.subscribe((user) => {
-      console.log('user', user);
       this.UserRole = user;
     });
   }

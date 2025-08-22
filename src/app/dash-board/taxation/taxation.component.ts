@@ -77,7 +77,12 @@ export class TaxationComponent implements OnInit {
         this.formvalueReset();
       },
       error: (err) => {
-        console.error('Error While Adding New tax', err);
+        const msg =
+          err.error && err.error.message
+            ? err.error.message
+            : 'Unknown error occurred';
+        console.log('Error In delete the tax:', msg);
+        this.showToast(msg, 'danger');
       },
     });
   }
@@ -204,8 +209,12 @@ export class TaxationComponent implements OnInit {
           this.reset();
         },
         error: (err) => {
-          console.log('taxation record updation failed', err.message);
-          this.showToast('Error !!', 'danger');
+          const msg =
+            err.error && err.error.message
+              ? err.error.message
+              : 'Unknown error occurred';
+          console.log('Error In delete the tax:', msg);
+          this.showToast(msg, 'danger');
         },
       });
       console.log('Updated Item:', updatedItem);

@@ -7,6 +7,7 @@ import {
   FormArray,
 } from '@angular/forms';
 import { CommunicationService } from '../../communication.service';
+import { FormValidationService } from '../../form-validation.service';
 
 @Component({
   selector: 'app-addons',
@@ -20,13 +21,18 @@ export class AddonsComponent implements OnInit {
   openModal: boolean = false; // variable used for opening the modal
   deleteModalOpen: boolean = false; //variable used for opening the  delete modal
 
-  constructor(private fb: FormBuilder, private service: CommunicationService) {
+  constructor(
+    private fb: FormBuilder,
+    private service: CommunicationService,
+    private formService: FormValidationService
+  ) {
     this.addOnListForm = new FormGroup({
       addOnListArray: this.fb.array([]),
     });
   }
 
   ngOnInit(): void {
+    this.formService.registerForm(this.addOnListForm);
     this.service.modalFormData$.subscribe((data) => {
       this.addOnrecivedData(data);
     });

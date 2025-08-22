@@ -3,6 +3,7 @@ import { RouterLink, Router } from '@angular/router';
 import { ApiService } from '../../api.service';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../Loader/services/loader.service';
+import { AuthenticationService } from '../../authentication.service';
 
 @Component({
   selector: 'app-product-table',
@@ -15,16 +16,24 @@ export class ProductTableComponent {
   //variables
   productDetailsArray: any[] = [];
   isDeleteModalOpen: boolean = false;
+  UserRole!: any;
 
   //constructor
   constructor(
     private api: ApiService,
     private router: Router,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit() {
     this.resetTable();
+
+    this.authService.user$.subscribe((user) => {
+      this.UserRole = user;
+      console.log('user', user);
+      console.log('userRole', this.UserRole);
+    });
   }
 
   getImageUrl(imageFileName: string): string {
@@ -55,11 +64,11 @@ export class ProductTableComponent {
   }
 
   searchProdDtl(prodName: any): void {
+    console.log(prodName);
     if (prodName && prodName.trim() !== '') {
       const filtered = this.productDetailsArray.filter((product) =>
         product.productName.includes(prodName.trim())
       );
-
       this.productDetailsArray = filtered;
       this.totalItems = this.productDetailsArray.length;
       this.currentPage = 1;

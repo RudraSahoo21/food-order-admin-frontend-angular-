@@ -11,6 +11,8 @@ import { AddonListComponent } from './dash-board/addon-list/addon-list.component
 import { SignUpComponent } from './dash-board/sign-up/sign-up.component';
 import { SignInComponent } from './dash-board/sign-in/sign-in.component';
 import { authguardGuard } from './authguard.guard';
+import { AccessPortalComponent } from './dash-board/access-portal/access-portal.component';
+import { PlacesLocationComponentComponent } from './dash-board/places-location-component/places-location-component.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +67,8 @@ export const routes: Routes = [
       },
       { path: 'SingUP', component: SignUpComponent },
       { path: 'SignIn', component: SignInComponent },
+      { path: 'Access-Portal', component: AccessPortalComponent },
+      { path: 'Location', component: PlacesLocationComponentComponent },
     ],
   },
 ];

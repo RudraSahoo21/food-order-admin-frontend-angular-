@@ -38,13 +38,13 @@ export class FormValidationService {
   }
 
   // reset the form
-  /*  
+
   resetForm(): void {
     this.allFormsGroup.forEach((form) => {
+      console.log('reset form trigger');
       form.reset();
     });
   }
-  */
 
   // Trigger validation on all registered forms
   validateAllForms(): void {
@@ -64,6 +64,7 @@ export class FormValidationService {
 
   private updateFormsValidity(): void {
     const allValid = this.allFormsGroup.every((form) => form.valid); // Returns true if all forms are valid
+    console.log('function updateFormsValidity', allValid);
     this.allFormsValidSubject.next(allValid); // Emit the validity status using BehaviorSubject
   }
 
@@ -148,8 +149,10 @@ export class FormValidationService {
 
   // Recursively populate FormArray controls
   private populateFormArray(control: FormArray, value: any[]): void {
+    console.log('Populating FormArray', control, value);
+
     setTimeout(() => {
-      // control.clear(); // Clear the existing FormArray
+      control.clear(); // Clear the existing FormArray
       value.forEach((item) => {
         // console.log('item', item);
         if (Array.isArray(item)) {
