@@ -1,0 +1,21 @@
+.container {
+  font-family: "Times New Roman", Times, serif;
+  background: ghostwhite;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: bold;
+  padding: 2rem;
+}
+
+.section_1 {
+  font-family: "Times New Roman", Times, serif;
+  font-size: large;
+}
+
+.bi-geo-alt-fill {
+  color: rgb(129, 18, 18);
+}

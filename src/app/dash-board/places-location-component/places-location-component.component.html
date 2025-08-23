@@ -1,1 +1,122 @@
-<p>places-location-component works!</p>
+<div class="container card p-3 mt-3 d-flex">
+  <div class="heading mt-3 mb-2">
+    <h6 class="card-title">
+      <span><i class="bi bi-geo-alt-fill"></i></span>
+      Location of Places
+    </h6>
+  </div>
+  <div class="section_1">
+    <div class="row card-body align-items-center justify-content-between">
+      <!-- Search Input + Search Button -->
+      <div class="col-xl-6 d-flex flex-row gap-2">
+        <input
+          class="form-control border-primary"
+          type="search"
+          placeholder="Search Location"
+          aria-label="Search"
+          #searcInput
+          (keyup.enter)="searchLocation(searcInput)"
+        />
+        <button class="btn btn-primary" (click)="searchLocation(searcInput)">
+          Search
+        </button>
+      </div>
+
+      <!-- Add New Location Button -->
+      <div class="col-xl-2 text-end">
+        <button
+          class="btn btn-success w-100 w-xl-auto"
+          data-bs-toggle="modal"
+          data-bs-target="#addNewLocationModal"
+        >
+          Add New Location
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-2 card-body row">
+    <div class="resetSection col-xl-12 text-end">
+      <button type="button" class="btn btn-warning" (click)="reloadTable()">
+        Reload Table
+      </button>
+    </div>
+    <div class="dataTable col-xl-12 mt-1">
+      <table class="table text-center table-hover">
+        <thead class="table-danger">
+          <tr>
+            <th scope="col">Sl no.</th>
+            <th scope="col">Name Of Places</th>
+            <th scope="col">Longitude</th>
+            <th scope="col">Latitude</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of getCurrentPageItems(); index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ data.placeName }}</td>
+            <td>{{ data.long }}</td>
+            <td>{{ data.lat }}</td>
+            <td>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button type="button" class="btn btn-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- pagenation section -->
+    <div class="col-12 mt-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-secondary" (click)="previousPage()">
+          ← Prev
+        </button>
+        <div class="fw-bold">Page {{ currentPage }} / {{ totalPages() }}</div>
+        <button class="btn btn-outline-secondary" (click)="nextPage()">
+          Next →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------------------Modal Section---------------------- -->
+<!-- 1. Add New Location Modal -->
+<div
+  class="modal fade"
+  id="addNewLocationModal"
+  tabindex="-1"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Add New Locations
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success">ADD</button>
+      </div>
+    </div>
+  </div>
+</div>

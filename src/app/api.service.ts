@@ -258,4 +258,13 @@ export class ApiService {
       updatePermission
     );
   }
+
+  /**
+   *
+   * Location Related Apis below
+   */
+  // fetch all the location details form server
+  fetchAllLocation(): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/fetchAllLocations', {});
+  }
 }
