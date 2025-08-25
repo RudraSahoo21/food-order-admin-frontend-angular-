@@ -8,9 +8,9 @@
   <div class="section_1">
     <div class="row card-body align-items-center justify-content-between">
       <!-- Search Input + Search Button -->
-      <div class="col-xl-6 d-flex flex-row gap-2">
+      <div class="col-xl-8 d-flex flex-row gap-2">
         <input
-          class="form-control border-primary"
+          class="form-control"
           type="search"
           placeholder="Search Location"
           aria-label="Search"
@@ -36,8 +36,77 @@
   </div>
 
   <div class="section-2 card-body row">
-    <div class="resetSection col-xl-12 text-end">
-      <button type="button" class="btn btn-warning" (click)="reloadTable()">
+    <div class="filter-section col-xl-8 mb-2">
+      <h6 id="rediusHeading">Filter by Radius :</h6>
+      <!-- Search  by Filter Form -->
+      <form
+        class="d-flex flex-row gap-3 filterInputs"
+        [formGroup]="filterByRadiusForm"
+        (ngSubmit)="filterByRadius()"
+      >
+        <div class="col-md-3">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Longitude"
+            aria-label="Search"
+            formControlName="longitude"
+          />
+          <div
+            *ngIf="
+              filterByRadiusForm.get('longitude')?.touched &&
+              filterByRadiusForm.get('longitude')?.invalid
+            "
+          >
+            <small class="text-danger">Please enter a valid Longitude</small>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Latitude"
+            formControlName="latitude"
+          />
+          <div
+            *ngIf="
+              filterByRadiusForm.get('latitude')?.touched &&
+              filterByRadiusForm.get('latitude')?.invalid
+            "
+          >
+            <small class="text-danger">Please enter a valid latitude</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Radius"
+              formControlName="radiusInKm"
+            />
+            <span class="input-group-text">K.M</span>
+          </div>
+          <div
+            *ngIf="
+              filterByRadiusForm.get('radiusInKm')?.touched &&
+              filterByRadiusForm.get('radiusInKm')?.invalid
+            "
+          >
+            <small class="text-danger">Please enter a valid radius</small>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="resetSection col-xl-4 text-end">
+      <button
+        type="button"
+        class="btn btn-warning reloadTableBtn"
+        (click)="reloadTable()"
+      >
         Reload Table
       </button>
     </div>
@@ -54,19 +123,39 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of getCurrentPageItems(); index as i">
-            <th scope="row">{{ i + 1 }}</th>
+            <th scope="row">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</th>
             <td>{{ data.placeName }}</td>
             <td>{{ data.long }}</td>
             <td>{{ data.lat }}</td>
             <td>
               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-warning">
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editLocationModal"
+                  (click)="sendDataToModal(data)"
+                >
                   <i class="bi bi-pencil-square"></i>
                 </button>
-                <button type="button" class="btn btn-danger">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"
+                  (click)="sendDataToModal(data)"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
+            </td>
+          </tr>
+          <tr *ngIf="locationDetailsSubArr.length == 0">
+            <td
+              colspan="100%"
+              style="text-align: center; vertical-align: middle"
+            >
+              No Data Found
             </td>
           </tr>
         </tbody>
@@ -98,7 +187,11 @@
   data-bs-backdrop="static"
 >
   <div class="modal-dialog">
-    <div class="modal-content">
+    <form
+      class="modal-content"
+      [formGroup]="addNewLocationForm"
+      (ngSubmit)="addFormSubmit()"
+    >
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">
           Add New Locations
@@ -110,13 +203,225 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">...</div>
+      <div class="modal-body p-3">
+        <div class="placename-addmodal-section">
+          <label for="PlaceName" class="form-label">Place Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="PlaceName"
+            placeholder="Enter the location name"
+            formControlName="placeName"
+          />
+          <div
+            *ngIf="
+              addNewLocationForm.get('placeName')?.touched &&
+              addNewLocationForm.get('placeName')?.hasError('required')
+            "
+          >
+            <small class="text-danger"
+              >Please enter a valid Location Name.</small
+            >
+          </div>
+        </div>
+        <div class="location-addmodal-section mt-5">
+          <h6>Location Coordinates</h6>
+          <div class="logitude-add">
+            <label for="Longitude" class="form-label">Longitude </label>
+            <input
+              type="number"
+              class="form-control"
+              id="Longitude"
+              placeholder="please enter co-ordinates"
+              formControlName="longitude"
+            />
+            <div
+              *ngIf="
+                addNewLocationForm.get('longitude')?.touched &&
+                addNewLocationForm.get('longitude')?.hasError('required')
+              "
+            >
+              <small class="text-danger"
+                >This field can't be empty , please enter a valid number</small
+              >
+            </div>
+          </div>
+          <div class="latitude-add">
+            <label for="Latitude" class="form-label">Latitude</label>
+            <input
+              type="number"
+              class="form-control"
+              id="Latitude"
+              placeholder="please enter co-ordinates"
+              formControlName="latitude"
+            />
+            <div
+              *ngIf="
+                addNewLocationForm.get('latitude')?.touched &&
+                addNewLocationForm.get('latitude')?.hasError('required')
+              "
+            >
+              <small class="text-danger"
+                >This field can't be empty , please enter a valid number</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-success">ADD</button>
+        <button type="submit" class="btn btn-success">ADD</button>
       </div>
-    </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Delete Location Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="deleteLocationDetails"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <form
+      class="modal-content"
+      [formGroup]="deleteLocationForm"
+      (ngSubmit)="deleteFormSubmit()"
+    >
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body delete-Modal">
+        Are you sure you want to delete this Location Details ? This action
+        cannot be undo.
+        <div class="d-flex flex-column mt-2">
+          <small
+            >Location Name:
+            <span class="text-danger">{{
+              deleteLocationForm.get("placeName")?.value
+            }}</span>
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-danger" id="confirmDelete">
+          Delete
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. Edit Location Modal -->
+<div
+  class="modal fade"
+  id="editLocationModal"
+  tabindex="-1"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+>
+  <div class="modal-dialog">
+    <form
+      class="modal-content"
+      [formGroup]="editLocationForm"
+      (ngSubmit)="editFormSubmit()"
+    >
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Update Locations Details
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body p-3">
+        <div class="placename-addmodal-section">
+          <label for="PlaceName" class="form-label">Place Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="PlaceName"
+            placeholder="Enter the location name"
+            formControlName="placeName"
+          />
+          <div
+            *ngIf="
+              editLocationForm.get('placeName')?.touched &&
+              editLocationForm.get('placeName')?.hasError('required')
+            "
+          >
+            <small class="text-danger"
+              >Please enter a valid Location Name.</small
+            >
+          </div>
+        </div>
+        <div class="location-addmodal-section mt-5">
+          <h6>Location Coordinates</h6>
+          <div class="logitude-add">
+            <label for="Longitude" class="form-label">Longitude </label>
+            <input
+              type="number"
+              class="form-control"
+              id="Longitude"
+              placeholder="please enter co-ordinates"
+              formControlName="longitude"
+            />
+            <div
+              *ngIf="
+                editLocationForm.get('longitude')?.touched &&
+                editLocationForm.get('longitude')?.hasError('required')
+              "
+            >
+              <small class="text-danger"
+                >This field can't be empty , please enter a valid number</small
+              >
+            </div>
+          </div>
+          <div class="latitude-add">
+            <label for="Latitude" class="form-label">Latitude</label>
+            <input
+              type="number"
+              class="form-control"
+              id="Latitude"
+              placeholder="please enter co-ordinates"
+              formControlName="latitude"
+            />
+            <div
+              *ngIf="
+                editLocationForm.get('latitude')?.touched &&
+                editLocationForm.get('latitude')?.hasError('required')
+              "
+            >
+              <small class="text-danger"
+                >This field can't be empty , please enter a valid number</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="submit" class="btn btn-success">Update</button>
+      </div>
+    </form>
   </div>
 </div>

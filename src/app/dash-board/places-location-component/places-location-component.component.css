@@ -19,3 +19,12 @@
 .bi-geo-alt-fill {
   color: rgb(129, 18, 18);
 }
+
+.reloadTableBtn {
+  width: 47%;
+}
+#rediusHeading {
+  font-size: larger;
+  color: maroon;
+  font-weight: bold;
+}

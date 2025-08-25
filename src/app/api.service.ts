@@ -267,4 +267,29 @@ export class ApiService {
   fetchAllLocation(): Observable<any> {
     return this.http.post<any>('http://localhost:3000/fetchAllLocations', {});
   }
+  // Add new places location coordinates
+  addnewLocation(payload: object): Observable<any> {
+    return this.http.post<any>('http://localhost:3000/addNewPlaces', payload);
+  }
+  // Delete location details
+  deleteLocation(_id: string): Observable<any> {
+    return this.http.delete<any>('http://localhost:3000/deletePlaceLocation', {
+      body: { _id },
+    });
+  }
+  // Edit  Location Details
+  editLocation(payload: object): Observable<any> {
+    debugger;
+    return this.http.patch<any>(
+      'http://localhost:3000/updatePlacesLocation',
+      payload
+    );
+  }
+  // filter Near by locations
+  filterNearbyLocation(payload: object): Observable<any> {
+    return this.http.post<any>(
+      'http://localhost:3000/fetchNearByLocation',
+      payload
+    );
+  }
 }
