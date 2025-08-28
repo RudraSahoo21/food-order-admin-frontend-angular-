@@ -17,8 +17,8 @@ import {
 })
 export class PlacesLocationComponentComponent implements OnInit {
   //Injects
-  private api = inject(ApiService);
-  private fb = inject(FormBuilder);
+  private api = inject(ApiService); // injects the apiService
+  private fb = inject(FormBuilder); // injects formBuilder
 
   ngOnInit(): void {
     this.pageLoad();
@@ -65,11 +65,13 @@ export class PlacesLocationComponentComponent implements OnInit {
   locationDetailsArr: location[] = []; //main array where server data stored permanently
   locationDetailsSubArr: location[] = []; //copy of mainarray for rendering data in UI
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 4;
 
-  /** Functions */
-
-  // when pageload data receive from server and mapped in main array then copy in subarray for render
+  /**
+   * Fetch all locations records from the api.
+   * Store  all the records in "locationDetailsArr".
+   * Then prepares a copy in locationDetailsSubArr for UI rendering.
+   */
   pageLoad(): void {
     this.api.fetchAllLocation().subscribe({
       next: (res) => {
@@ -98,17 +100,21 @@ export class PlacesLocationComponentComponent implements OnInit {
     });
   }
 
-  //reload the table
+  /** Copy the "locationDetailsArr"array into "locationDetailsSubArr" array*/
   reloadTable(): void {
     this.locationDetailsSubArr = [...this.locationDetailsArr];
     this.currentPage = 1;
   }
 
-  // Serch location by location name
+  /**
+   * Filters the location list on the "locationDetailsArr [ ]"array based on the user's search input.
+   * Updates the "locationDetailsSubArr [ ]" used for UI rendering with matched results.
+   * Clears the input field after filtering.
+   *
+   * @param searchInput -The input element containing the search query.
+   */
   searchLocation(searchInput: HTMLInputElement): void {
-    console.log(searchInput.value);
     const regex = new RegExp(searchInput.value, 'i');
-    console.log(regex);
     this.locationDetailsSubArr = this.locationDetailsArr.filter((item: any) => {
       return regex.test(item.placeName);
     });
@@ -117,6 +123,15 @@ export class PlacesLocationComponentComponent implements OnInit {
 
   // filter location by radius
   filterByRadiusForm!: FormGroup;
+
+  /**
+   * Filter Location By Radius Functionalities
+   -------------------------
+   * 1. Check the  "filterByRadiusForm" form is valid or invalid .
+   * 2. If valid then getting the longitude, latitude, radiusInKm values from the "filterByRadiusForm" and create a Payload
+   * 3. Send the payload to server, received the records from api , copy those records in a  "locationDetailsSubArr" array for UI rendering
+   *
+   */
   filterByRadius() {
     if (this.filterByRadiusForm.invalid) {
       this.filterByRadiusForm.markAllAsTouched(); // highlights errors
@@ -124,7 +139,7 @@ export class PlacesLocationComponentComponent implements OnInit {
       return;
     }
     const { longitude, latitude, radiusInKm } = this.filterByRadiusForm.value;
-    const radiusInMeter = parseFloat(radiusInKm) * 1000;
+    const radiusInMeter = parseFloat(radiusInKm) * 1000; // convert kilometer to meter
     const payload = {
       long: parseFloat(longitude),
       lat: parseFloat(latitude),
@@ -155,17 +170,27 @@ export class PlacesLocationComponentComponent implements OnInit {
   }
 
   // pagination Function
+  /**
+   * Returns a paginated slice of the locationDetailsSubArr array
+   * based on the current page and items per page.
+   * @returns {location[]} A sliced array of location objects for the current page.
+   */
   getCurrentPageItems(): location[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.locationDetailsSubArr.slice(startIndex, endIndex);
   }
+  /**
+   * @returns {number}  number of total pages
+   */
   totalPages(): number {
     return Math.ceil(this.locationDetailsSubArr.length / this.itemsPerPage);
   }
+  /** render previous page of the table */
   previousPage(): void {
     if (this.currentPage > 1) this.currentPage--;
   }
+  /** render next page of the table */
   nextPage(): void {
     if (this.currentPage < this.totalPages()) this.currentPage++;
   }
@@ -174,7 +199,14 @@ export class PlacesLocationComponentComponent implements OnInit {
    *************** Modal Related Functions are below *******************
    */
 
-  // close all the modals
+  /**
+   * Functionalities
+   --------------------
+   * 1. Trigger the open modals cancle button
+   * 2. addNewLocationForm reset
+   * 3. deleteLocationForm reset
+   * 4. editLocationForm reset
+   */
   closeModal(): void {
     const closeBtn = document.querySelector(
       '.modal.show  .btn-close'
@@ -185,6 +217,10 @@ export class PlacesLocationComponentComponent implements OnInit {
     this.editLocationForm.reset();
   }
 
+  /**
+   * Patch the main array item value into delete / edit modal.
+   * @param item - The value of renderd array element
+   */
   sendDataToModal(item: any): void {
     console.log(item);
     this.deleteLocationForm.patchValue({
@@ -201,6 +237,9 @@ export class PlacesLocationComponentComponent implements OnInit {
 
   // Add Modal Functionalities
   addNewLocationForm!: FormGroup;
+  /**
+   Check "addNewLocationForm" form is valid or not first . If valid then creates a payload with keys ( placeName , longitude , latitude ) . Then send the payload  to server for adding new location details
+   */
   addFormSubmit(): void {
     if (this.addNewLocationForm.invalid) {
       this.addNewLocationForm.markAllAsTouched();
@@ -230,6 +269,9 @@ export class PlacesLocationComponentComponent implements OnInit {
 
   // Delete Modal Functionalities
   deleteLocationForm!: FormGroup;
+  /**
+    Send  "_id" to server for delete the record .
+   */
   deleteFormSubmit(): void {
     const { _id } = this.deleteLocationForm.value;
     this.api.deleteLocation(_id).subscribe({
@@ -247,13 +289,17 @@ export class PlacesLocationComponentComponent implements OnInit {
 
   // Edit Modal Functionalities
   editLocationForm!: FormGroup;
+  /**
+   * Check "addNewLocationForm" form is valid or not first .
+   * If valid then creates a payload with updated record .
+   * Send the payload to server for updation in DB
+   */
   editFormSubmit(): void {
     if (this.editLocationForm.invalid) {
       this.editLocationForm.markAllAsTouched();
       return;
     }
     const { _id, placeName, longitude, latitude } = this.editLocationForm.value;
-
     const payload = {
       _id: _id,
       placeName: placeName,
@@ -261,7 +307,6 @@ export class PlacesLocationComponentComponent implements OnInit {
         coordinates: [longitude, latitude],
       },
     };
-
     this.api.editLocation(payload).subscribe({
       next: (res) => {
         console.log(res);
@@ -276,6 +321,9 @@ export class PlacesLocationComponentComponent implements OnInit {
   }
 }
 
+/**
+ * interface for "locationDetailsArr" & "locationDetailsSubArr" atrributes.
+ */
 interface location {
   _id: string;
   placeName: string;
